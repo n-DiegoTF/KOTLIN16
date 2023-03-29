@@ -2,7 +2,8 @@ import atm.usecases.CreateUser
 
 class Home {
     fun initHome() {
-        println("Bienvenido a tu cajero. Selecciona una opción:\n" +
+        println("BANCO NACIONAL BEDU S.A. de C.V." +
+                "Bienvenido a tu cajero. Selecciona una opción:\n" +
                 "1 - Crear usuario.\n" +
                 "2 - Iniciar sesión.")
         val optionSelected = readlnOrNull()
