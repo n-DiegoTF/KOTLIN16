@@ -16,11 +16,10 @@ durante cada sesión de la fase 2.
 implementar temas que se vieron a lo largo del módulo.
 
 ### Integrantes:
-* [Usuario1](https://github.com/YaelRmz)
-* [Usuario2](https://github.com/n-DiegoTF)
-* [Usuario3](https://github.com/marioquintalcob)
-* [Usuario4](https://github.com/ErickDaniel04)
-* [Usuario5](https://github.com/YaelRmz)
+* [Yael](https://github.com/YaelRmz)
+* [Diego](https://github.com/n-DiegoTF)
+* [Mario](https://github.com/marioquintalcob)
+* [Erick](https://github.com/ErickDaniel04)
 
 ### Sesión 1
 ***
@@ -145,7 +144,126 @@ private fun doTransfer() {
 ***
 **Programación Orientada a Objetos**
 
+Para aplicar los conceptos de la POO definimos una clase para la creación de usuarios en donde a sus atributos se le
+asignan modificadores privados para evitar que estos sean modificados desde otra clase.
 
+```kotlin
+class CreateUser(
+    private var users: MutableMap<String, User>,
+    private val name: String,
+    private val userName: String,
+    private val password: String
+) {
+    fun saveUser() {
+        val id = generateId()
+        val hashPassword = generateHashPassword(password)
+        val user = User(id, name, userName, 0.0, hashPassword)
+        users[userName] = user
+    }
+}
+```
+Estos parametros son modificados desde la clase home, pasamos los valores del nuevo usuario a traves del objeto newUser
+a traves de la función *saveUser()*
+```kotlin
+class home{
+    private fun createUser() {
+        print("Nombre: ")
+        var name = readlnOrNull()
+        while (name == null) {
+            print("Nombre: ")
+            name = readlnOrNull()
+        }
+        print("Usuario: ")
+        var userName = readlnOrNull()
+        while (userName == null) {
+            print("Nombre: ")
+            userName = readlnOrNull()
+        }
+        print("Contraseña: ")
+        var password = readlnOrNull()
+        while (password == null) {
+            print("Nombre: ")
+            password = readlnOrNull()
+        }
+
+        val newUser = CreateUser(mUsers, name, userName, password)
+        newUser.saveUser()
+    }
+}
+```
+
+### Sesión 4
+***
+**Clases Abstractas**
+
+Las clases abstractas es una manera de generalizar nuestro código y poder reutilizarlo y sobreescribirlo segun sea necesario.
+En nuestro proyecto creamos una clase abstracta para las transacciones, ya que se requiere para optimizar las clases para
+recibir y enviar dinero.
+```kotlin
+abstract class Transaction {
+    abstract val mMoneyToTransfer: Double
+    abstract val mUser: User
+
+    abstract fun doTransfer()
+
+    fun saveTransfer(transference: MutableMap<Int, Transference>) {
+        val id = Random.nextInt()
+        transference[id] = Transference(id, mUser.user, mMoneyToTransfer, getTransactionType())
+        println(transference[id])
+    }
+
+    private fun getTransactionType(): String {
+        return this.javaClass.name
+    }
+}
+```
+En las siguientes clases podemos observar como cada clase implementa y sobreescribe las funciones de la clase abstracta
+para realizar o modificar las operaciones de cada función.
+```kotlin
+class TransactionSent(
+    override val mMoneyToTransfer: Double,
+    override val mUser: User
+) : Transaction() {
+    override fun doTransfer() {
+        println("Doing Transaction sent")
+    }
+}
+
+class TransactionReceived(
+    override val mMoneyToTransfer: Double,
+    override val mUser: User
+) : Transaction() {
+    override fun doTransfer() {
+        println("Doing Transaction received")
+    }
+}
+```
+**Data Class**
+
+Los Data Class en Kotlin es una implementación más sencilla de las clases POJO en Java, ahorrandonos gran cantidad de código.
+
+En nuestro proyecto decidimos implementar dos Data Class para agilizar la creación de usuarios y transferencias.
+```kotlin
+data class User(
+    val id: Int,
+    val name: String,
+    val user: String,
+    var balance: Double,
+    val password: String
+)
+
+data class Transference(
+    val id: Int,
+    val userName: String,
+    val amount: Double,
+    val type: String,
+)
+```
+
+
+```kotlin
+
+```
 
 ```kotlin
 
