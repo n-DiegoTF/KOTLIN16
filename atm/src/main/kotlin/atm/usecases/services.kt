@@ -7,7 +7,6 @@ fun services(){
             "3. Pagar tus tarjetas\n" +
             "4. Pagar servicios\n")
     var option = option()
-
     when (option?.toInt()) {
         1 -> Transfer()
     }
