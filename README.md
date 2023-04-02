@@ -11,4 +11,3 @@ consultar saldo de usuarios, realizar transacciones, simular retiros y depositos
 La finalidad de este proyecto es demostrar los conocimientos adquiridos durante el modulo II de Desarrollo Movil, <br>
 por lo que tomamos una idea ya existente y la desarrollamos en base al lenguaje kotlin y a los conceptos aprendidos <br>
 durante cada sesion de la fase 2.
-
