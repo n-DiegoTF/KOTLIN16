@@ -1,8 +1,10 @@
 package atm.usecases
 
 import atm.entities.User
+import kotlin.random.Random
 
 class CreateUser(
+    private var users: MutableMap<String, User>,
     private val name: String,
     private val userName: String,
     private val password: String
@@ -11,16 +13,18 @@ class CreateUser(
         val id = generateId()
         val hashPassword = generateHashPassword(password)
         val user = User(id, name, userName, 0.0, hashPassword)
-        // TODO: Save persistent info
+        users[userName] = user
     }
 
-    private fun generateId(): Int{
-        // TODO: Generate an unique ID
-        return -1
+    private fun generateId(): Int {
+        return Random.nextInt()
     }
 
     private fun generateHashPassword(password: String): String {
         return password.hashCode().toString()
     }
 
+    private fun updateLocalDB() {
+
+    }
 }
