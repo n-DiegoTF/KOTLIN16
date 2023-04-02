@@ -9,7 +9,7 @@ import java.io.File
 
 class LoadData {
     companion object {
-        fun loadUsers(): List<User> {
+        fun loadUsers(): MutableMap<String, User> {
             return try {
                 val assetsPath = System.getProperty("user.dir") + ASSETS_DIRECTORY
                 val lines = File("$assetsPath/$USERS_DB").readText()
@@ -17,10 +17,11 @@ class LoadData {
                 val gson = Gson()
                 val listPersonType = object : TypeToken<List<User>>() {}.type
 
-                gson.fromJson(lines, listPersonType)
+                val usersList: List<User> = gson.fromJson(lines, listPersonType)
+                usersList.associateBy({ it.user }, { it }).toMutableMap()
             } catch (e: Exception) {
                 e.printStackTrace()
-                emptyList()
+                mutableMapOf()
             }
         }
     }
