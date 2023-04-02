@@ -1,7 +1,7 @@
 package atm.usecases
 
-class cash_dispensar(
+class cash_dispenser(
 
-
+println("")
 
 )

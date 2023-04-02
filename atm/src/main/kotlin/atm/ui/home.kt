@@ -1,4 +1,6 @@
 import atm.usecases.CreateUser
+import atm.usecases.Transfer
+import atm.usecases.services
 
 class Home {
     fun initHome() {
@@ -38,6 +40,16 @@ class Home {
     }
 
     fun doLogin() {
+    services()
+        var option = readlnOrNull()
+        when(option?.toInt()){
+            1 -> println("Withdrawal()")
+            2 -> {Transfer()}
+            3-> println("PayMyCards)")
+            4 -> println("PayBills()")
+        }
 
     }
+
 }
+
