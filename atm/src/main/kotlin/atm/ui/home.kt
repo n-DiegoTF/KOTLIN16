@@ -65,14 +65,16 @@ class Home {
                     "1 - Deposito.\n" +
                     "2 - Pagar servicios.\n" +
                     "3 - Transferencia.\n" +
-                    "4 - Cerrar sesión."
+                    "4 - Invertir tu dinero." +
+                    "5 - Cerrar sesión."
         )
         val optionSelected = readlnOrNull()
         when (optionSelected?.toInt()) {
             1 -> doDeposit()
             2 -> paybills()
             3 -> doTransfer()
-            4 -> doLogout()
+            4 -> inversion()
+            5 -> doLogout()
         }
     }
 
