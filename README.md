@@ -139,6 +139,36 @@ private fun doTransfer() {
         showUserOperations()
     }
 ```
+**Colección de datos**
+
+Kotlin nos proporciona diferentes tipos de estructuras de datos para poder realizar dterminadas operaciones con los datos
+que queramos almacenar. Algunas estructuras de datos que nos ofrece Kotlin son *List, Set, Map*.
+
+Para nuestro proyecto requerimos el uso de datos persistentes para poder almacenar todas las operaciones realizadas durante
+la ejecución del programa por lo que hicimos uso de un archivo externo para guardar los cambios realizados, así como tambien
+se implementaron las estructuras de datos pertinentes para poder operar con los datos de nuestro archivo externo y de esta
+manera no perder los cambios realizados.
+```kotlin
+class LoadData {
+    companion object {
+        fun loadUsers(): MutableMap<String, User> {
+            return try {
+                val assetsPath = System.getProperty("user.dir") + ASSETS_DIRECTORY
+                val lines = File("$assetsPath/$USERS_DB").readText()
+
+                val gson = Gson()
+                val listPersonType = object : TypeToken<List<User>>() {}.type
+
+                val usersList: List<User> = gson.fromJson(lines, listPersonType)
+                usersList.associateBy({ it.user }, { it }).toMutableMap()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                mutableMapOf()
+            }
+        }
+    }
+}
+```
 
 ### Sesión 3
 ***
@@ -260,10 +290,101 @@ data class Transference(
 )
 ```
 
-```kotlin
+### Sesión 5
+**Programación Funcional**
 
+La programación funcional nos permiten trabajar de forma más dinamica con las funciones dentro de nuestro código, por ejemplo,
+las funciones lambda que nos permiten asignar funciones a variables o pasarlas como parametros de otra función.
+
+Para nuestro proyecto se aplicaron funciones lambda para determinadas operaciones, sin embargo, estas funciones fueron
+cambias o reemplazadas por funciones más eficientes o complejas.
+```kotlin
+//Función usada para calcular el saldo total después de un depósito
+val saldoTotal = {deposito: Double -> saldoInicial + saldoDepositado}
+
+//Función usada para calcular el saldo total después de un retiro
+val saldoRestante: (Double) = {retiro: Double -> saldoInicial - saldoRetirado}
+
+//Pasando funciones como parametro a funciones de orden superior
+fun imprimirOperacion(saldoTotal: (Double, Double)-> saldoI, saldoD: Double){
+    println("Saldo total actualizado: ${saldoTotal(saldoI, saldoD)}")
+}
+
+fun imprimirSaldoRestante(saldoRestante: (Double, Double)-> saldoI, saldoR: Double){
+    println("Saldo total actualizado: ${saldoTotal(saldoI, saldoR)}")
+}
 ```
 
-```kotlin
+### Sesión 7
+***
+**Manejo de Errores**
 
+Para lograr que un programa sea fiable durante su ejecución existe la posibilidad de prevenirse de un cierre o
+errores inesperados. Tal es el caso del manejo de Excepciones y Null Safety.
+
+Para nuestro proyecto implementamos principalmente los operadores Null Safety, esto para evitar que el programa cierre
+inesperadamente al no recibir un valor válido.
+
+Por ejemplo en la función *doTransfer()* permitimos que el programa lea valores nulos para después canalizarlos con la condición
+*while* en donde si el valor de la transferencia o el usuario ingresados no son compatibles se le notifica al usuario que ingrese
+valores correctos
+```kotlin
+private fun doTransfer() {
+        println("Ingrese la cantidad a transferir: ")
+        var moneyToTransfer = readlnOrNull()?.toDouble()
+        while (moneyToTransfer == null) {
+            println("Ingrese un cantidad valida: ")
+            moneyToTransfer = readlnOrNull()?.toDouble()
+        }
+        println("Ingrese el usuario a hacer la transferencia: ")
+        var userToTransfer = readlnOrNull()
+        while (userToTransfer == null || !mUsers.containsKey(userToTransfer)) {
+            println("Usuario invalido o no existe. Por favor ingrese un usuario valido")
+            println("Ingrese el usuario a hacer la transferencia: ")
+            userToTransfer = readlnOrNull()
+        }
+        processTransfer(userToTransfer, mCurrentUser.user, moneyToTransfer!!)
+        println("Transferencia realizada con exito.")
+        showUserOperations()
+    }
+```
+
+El manejo de excepciones decimos implementarlo en la carga de los datos de los usuarios, esto debido a que si no se logran
+ cargar los datos no podremos ejecutar correctamente nuestro programa.
+```kotlin
+return try {
+    val assetsPath = System.getProperty("user.dir") + ASSETS_DIRECTORY
+    val lines = File("$assetsPath/$USERS_DB").readText()
+
+    val gson = Gson()
+    val listPersonType = object : TypeToken<List<User>>() {}.type
+
+    val usersList: List<User> = gson.fromJson(lines, listPersonType)
+    usersList.associateBy({ it.user }, { it }).toMutableMap()
+} catch (e: Exception) {
+    e.printStackTrace()
+    mutableMapOf()
+}
+```
+
+### Sesión 8
+***
+**Programación asíncrona**
+
+La programación asíncrona tiene varios modelos para poder ejecutar varias funciones del programa según se requieren en determinado
+tiempo. Para nuestro proyecto implementamos la función de Coroutines, ya que su principal caracteristica es la de suspender funciones
+en cierto punto hasta que otro proceso termine y se reanude, así como también es el metodo más sencillo de implementar.
+
+En nuestro proyecto implementamos una Coroutine en la función main, ya que antes de interactuar con el programa primero debemos
+de cargar los datos de nuestros usuarios para poder realizar las operaciones del programa.
+```kotlin
+fun main(args: Array<String>) {
+    val home = Home()
+    CoroutineScope(Dispatchers.IO).launch {
+        val users = LoadData.loadUsers()
+        home.setUsers(users)
+        home.setIsDBLoaded(users.isNotEmpty())
+    }
+    home.initHome()
+}
 ```
