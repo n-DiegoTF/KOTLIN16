@@ -36,13 +36,13 @@ class Home {
         print("Usuario: ")
         var userName = readlnOrNull()
         while (userName == null) {
-            print("Nombre: ")
+            print("Usuario: ")
             userName = readlnOrNull()
         }
         print("Contraseña: ")
         var password = readlnOrNull()
         while (password == null) {
-            print("Nombre: ")
+            print("Contraseña: ")
             password = readlnOrNull()
         }
 
@@ -51,8 +51,24 @@ class Home {
     }
 
     private fun doLogin() {
-        // TODO: Use correct user
-        mCurrentUser = mUsers.get("jmcpheat0")!!
+        showHeader()
+        print("Usuario: ")
+        var userName = readlnOrNull()
+        while (userName == null || !mUsers.containsKey(userName)) {
+            println("Usuario no existe o es incorrecto")
+            print("Nombre: ")
+            userName = readlnOrNull()
+        }
+        print("Contraseña: ")
+        var password = readlnOrNull()
+        while (password == null || mUsers[userName]!!.password != password) {
+            println("Contraseña incorrecto")
+            print("Contraseña: ")
+            password = readlnOrNull()
+        }
+
+        mCurrentUser = mUsers.get(userName)!!
+        println("Bienvenido ${mCurrentUser.name}.")
         showUserOperations()
     }
 
