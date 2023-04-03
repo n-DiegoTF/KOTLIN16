@@ -1,10 +1,7 @@
 import atm.entities.Transference
 import atm.entities.User
-import atm.usecases.CreateUser
-import atm.usecases.TransactionReceived
-import atm.usecases.TransactionSent
+import atm.usecases.*
 import atm.usecases.abstracs.Transaction
-import atm.usecases.cash_dispensar
 
 class Home {
     private lateinit var mUsers: MutableMap<String, User>
@@ -48,6 +45,7 @@ class Home {
 
         val newUser = CreateUser(mUsers, name, userName, password)
         newUser.saveUser()
+        println("Usuario creado. Bienvenido $userName")
     }
 
     private fun doLogin() {
@@ -62,19 +60,21 @@ class Home {
 
     private fun showUserOperations() {
         println(
-            "BANCO NACIONAL BEDU S.A. de C.V." +
-                    "Operaciones disponibles:\n" +
+            "BANCO NACIONAL BEDU S.A. de C.V.\n" +
+                    "¿Qué operación deseas realizar:\n" +
                     "1 - Deposito.\n" +
-                    "2 - Retiro.\n" +
+                    "2 - Pagar servicios.\n" +
                     "3 - Transferencia.\n" +
-                    "4 - Cerrar sesión."
+                    "4 - Invertir tu dinero.\n" +
+                    "5 - Cerrar sesión."
         )
         val optionSelected = readlnOrNull()
         when (optionSelected?.toInt()) {
             1 -> doDeposit()
-            2 -> cash_dispensar()
+            2 -> paybills()
             3 -> doTransfer()
-            4 -> doLogout()
+            4 -> inversion()
+            5 -> doLogout()
         }
     }
 
@@ -132,6 +132,8 @@ class Home {
     }
 
     private fun showHeader() {
-        println("BANCO NACIONAL BEDU S.A. de C.V.")
+        println("||||||||||||||||||||||||||||||||||||")
+        println("||BANCO NACIONAL BEDU S.A. de C.V.||")
+        println("||||||||||||||||||||||||||||||||||||")
     }
 }

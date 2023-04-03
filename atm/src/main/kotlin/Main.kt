@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 fun main(args: Array<String>) {
+    val square: (Int) -> Int = { it * it }
     val home = Home()
     CoroutineScope(Dispatchers.IO).launch {
         val users = LoadData.loadUsers()
@@ -11,4 +12,7 @@ fun main(args: Array<String>) {
         home.setIsDBLoaded(users.isNotEmpty())
     }
     home.initHome()
+}
+fun inversion(){
+
 }
