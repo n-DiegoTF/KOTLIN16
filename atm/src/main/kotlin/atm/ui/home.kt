@@ -36,13 +36,13 @@ class Home {
         print("Usuario: ")
         var userName = readlnOrNull()
         while (userName == null) {
-            print("Nombre: ")
+            print("Usuario: ")
             userName = readlnOrNull()
         }
         print("Contraseña: ")
         var password = readlnOrNull()
         while (password == null) {
-            print("Nombre: ")
+            print("Contraseña: ")
             password = readlnOrNull()
         }
 
@@ -51,8 +51,24 @@ class Home {
     }
 
     private fun doLogin() {
-        // TODO: Use correct user
-        mCurrentUser = mUsers.get("jmcpheat0")!!
+        showHeader()
+        print("Usuario: ")
+        var userName = readlnOrNull()
+        while (userName == null || !mUsers.containsKey(userName)) {
+            println("Usuario no existe o es incorrecto")
+            print("Nombre: ")
+            userName = readlnOrNull()
+        }
+        print("Contraseña: ")
+        var password = readlnOrNull()
+        while (password == null || mUsers[userName]!!.password != password) {
+            println("Contraseña incorrecto")
+            print("Contraseña: ")
+            password = readlnOrNull()
+        }
+
+        mCurrentUser = mUsers.get(userName)!!
+        println("Bienvenido ${mCurrentUser.name}.")
         showUserOperations()
     }
 
@@ -67,15 +83,22 @@ class Home {
                     "1 - Deposito.\n" +
                     "2 - Retiro.\n" +
                     "3 - Transferencia.\n" +
-                    "4 - Cerrar sesión."
+                    "4 - Consultar saldo.\n" +
+                    "5 - Cerrar sesión."
         )
         val optionSelected = readlnOrNull()
         when (optionSelected?.toInt()) {
             1 -> doDeposit()
             2 -> cash_dispensar()
             3 -> doTransfer()
-            4 -> doLogout()
+            4 -> checkBalance()
+            5 -> doLogout()
         }
+    }
+
+    private fun checkBalance() {
+        println("Saldo actual: ${mCurrentUser.balance}")
+        showUserOperations()
     }
 
     private fun doDeposit() {
