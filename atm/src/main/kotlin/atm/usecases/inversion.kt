@@ -1,8 +1,6 @@
-package atm.usecases
-
 
 // FUNCIONES LITERALES //
-fun main(){
+ fun main(){
     // FUNCION INVERSION ES UNA FUNCION LAMBDA//
     val inversion: (Int,Int) -> String = { monto: Int, tasa: Int ->
         val rendimiento = (monto*tasa)/100

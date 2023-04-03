@@ -1,6 +1,6 @@
 package atm.usecases
 
-public fun paybills() {
+ fun paybills() {
     println("¿Que servicio deseas pagar?\n" +
             "1. Luz\n" +
             "2. Agua\n" +

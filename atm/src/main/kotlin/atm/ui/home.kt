@@ -65,7 +65,7 @@ class Home {
                     "1 - Deposito.\n" +
                     "2 - Pagar servicios.\n" +
                     "3 - Transferencia.\n" +
-                    "4 - Invertir tu dinero." +
+                    "4 - Invertir tu dinero.\n" +
                     "5 - Cerrar sesión."
         )
         val optionSelected = readlnOrNull()
